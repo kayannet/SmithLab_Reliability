@@ -2,6 +2,8 @@
 
 
 # Import all files
+def func(z):
+    return 'testing branch commit'
 
 
 # Clean data 
