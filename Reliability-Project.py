@@ -90,7 +90,7 @@ for filename in os.listdir(folder_path):
 
 
 # Create a dataframe per behavior with column = initials, rows = video and values = total duration of behavior
-reliability_df = pd.DataFrame(all_video_data).T.sort_index()
+reliability_df = pd.DataFrame(all_video_data).T.sort_index().fillna(0)
 
 # Create all pairwise comparisons of unique values in a list 
 
