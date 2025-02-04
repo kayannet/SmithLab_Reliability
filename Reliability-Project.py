@@ -13,11 +13,21 @@ def standardize(x):
     takes a column of text, and standardizes it to all lowercase, no spaces, no punctuation
     
     '''
+    
     # Remove all non-alphanumeric characters (punctuation, spaces, etc.)
     label_cleaned = re.sub(r'[^a-zA-Z]', '', x)
     # Convert to lowercase
     label_standardized = label_cleaned.lower()
+    
+    if 'self' in label_standardized:
+        label_standardized = 'selflicking'
+    elif 'groom' in label_standardized:
+        label_standardized = 'allogrooming'
+    else:
+        label_standardized = 'allolicking'
+    
     return label_standardized
+
 
 
 
