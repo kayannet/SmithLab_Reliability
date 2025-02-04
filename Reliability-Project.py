@@ -36,6 +36,8 @@ def standardize(x):
 # dictionary to hold all the data that will be turned into final df
 all_video_data = {}
 large_df = pd.DataFrame()
+all_initials = set()
+
 
 
 # loop through each file 
@@ -50,6 +52,9 @@ for filename in os.listdir(folder_path):
         # extract initials and file name for labeling purposes
         initials = filename.strip('.csv')[-2:]
         video_name = filename.split('_')[0]
+
+        all_initials.add(initials)
+
     
    
         # turn current csv file into a data frame
