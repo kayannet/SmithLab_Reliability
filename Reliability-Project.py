@@ -1,7 +1,18 @@
 import pandas as pd
 import numpy as np
+import sys 
 import os
 import re
+
+#!/usr/bin/env python3
+
+# terminal 
+if len(sys.argv) != 3: 
+    print("Invalid arguments. Should be in the form: ./file <initial> <initial>")
+    sys.exit(1)
+
+initial_1 = sys.argv[1]
+initial_2 = sys.argv[2]
 
 
 # assuming all data is in same folder as this file, with folder name 'csv'
@@ -13,12 +24,20 @@ def standardize(x):
     takes a column of text, and standardizes it to all lowercase, no spaces, no punctuation
     
     '''
+    
     # Remove all non-alphanumeric characters (punctuation, spaces, etc.)
     label_cleaned = re.sub(r'[^a-zA-Z]', '', x)
     # Convert to lowercase
     label_standardized = label_cleaned.lower()
+    
+    if 'self' in label_standardized:
+        label_standardized = 'selflicking'
+    elif 'groom' in label_standardized:
+        label_standardized = 'allogrooming'
+    else:
+        label_standardized = 'allolicking'
+    
     return label_standardized
-
 
 
 # Loop through all files in the folder
@@ -26,6 +45,7 @@ def standardize(x):
 # dictionary to hold all the data that will be turned into final df
 all_video_data = {}
 large_df = pd.DataFrame()
+all_initials = set()
 
 
 # loop through each file 
@@ -40,6 +60,8 @@ for filename in os.listdir(folder_path):
         # extract initials and file name for labeling purposes
         initials = filename.strip('.csv')[-2:]
         video_name = filename.split('_')[0]
+
+        all_initials.add(initials)
     
    
         # turn current csv file into a data frame
@@ -77,8 +99,8 @@ for filename in os.listdir(folder_path):
 # Create a dataframe per behavior with column = initials, rows = video and values = total duration of behavior
 reliability_df = pd.DataFrame(all_video_data).T.sort_index()
 
-# Create all pairwise comparisons of unique values in a list 
-
+# Create all pairwise comparisons of unique values in a list
+pairwise_comparisons = [(g1, g2) for i, g1 in enumerate(all_initials) for g2 in all_initials[i+1:]]
 
 
 # Create a method that outputs mean differences from a pairwise comparison of their behavior duration. 
