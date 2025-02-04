@@ -40,12 +40,15 @@ def standardize(x):
     return label_standardized
 
 
+
+
 # Loop through all files in the folder
 
 # dictionary to hold all the data that will be turned into final df
 all_video_data = {}
 large_df = pd.DataFrame()
 all_initials = set()
+
 
 
 # loop through each file 
@@ -62,6 +65,7 @@ for filename in os.listdir(folder_path):
         video_name = filename.split('_')[0]
 
         all_initials.add(initials)
+
     
    
         # turn current csv file into a data frame
@@ -97,7 +101,7 @@ for filename in os.listdir(folder_path):
 
 
 # Create a dataframe per behavior with column = initials, rows = video and values = total duration of behavior
-reliability_df = pd.DataFrame(all_video_data).T.sort_index()
+reliability_df = pd.DataFrame(all_video_data).T.sort_index().fillna(0)
 
 # Create all pairwise comparisons of unique values in a list
 pairwise_comparisons = [(g1, g2) for i, g1 in enumerate(all_initials) for g2 in all_initials[i+1:]]
