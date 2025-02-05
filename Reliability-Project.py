@@ -104,7 +104,61 @@ for filename in os.listdir(folder_path):
 reliability_df = pd.DataFrame(all_video_data).T.sort_index().fillna(0)
 
 # Create all pairwise comparisons of unique values in a list
-pairwise_comparisons = [(g1, g2) for i, g1 in enumerate(all_initials) for g2 in all_initials[i+1:]]
+initials_list = list(all_initials)
+pairwise_comparisons = [(g1, g2) for i, g1 in enumerate(initials_list) for g2 in initials_list[i+1:]]
 
 
 # Create a method that outputs mean differences from a pairwise comparison of their behavior duration. 
+
+# Filters dataframe with argument comparison 
+compare_df = reliability_df.loc[:, reliability_df.columns.str.contains(f'{initial_1}|{initial_2}')]
+
+# Find msec difference and percentage difference
+time_differences = {}
+percentage_differences = {}
+
+for index, row in compare_df.iterrows(): 
+    behaviors = reliability_df.columns.str[:-3].unique()
+    time_diff = {}
+    percent_diff = {}
+
+    for behavior in behaviors: 
+        cols = [col for col in compare_df.columns if behavior in col]
+
+        if len(cols) == 2: 
+            val1 = row[cols[0]]
+            val2 = row[cols[1]]
+            diff = float(abs(val1 - val2))
+            avg = (abs(val1 + val2)) / 2 
+
+            if avg != 0: 
+                pdiff = float(round((diff / avg) * 100, 2))
+            else:
+                pdiff = 0
+            
+            percent_diff[behavior] = pdiff
+
+            time_diff[behavior] = round(diff)
+    
+time_differences[index] = time_diff
+percentage_differences[index] = percent_diff
+
+
+# printing output to terminal 
+print("\n=== Time Differences (ms) ===")
+print (f"How to Read: {initial_2} is x msec off from {initial_1}\n")
+
+for video, behavior_diff in time_differences.items():
+    print(f"{video} : {behavior_diff}")
+    sys.stdout.flush()
+
+print("\n=== Percentage Differences (%) ===")
+print (f"How to Read: {initial_2} is x percent off from {initial_1}\n")
+
+for v, p in percentage_differences.items():
+    print(f"{v} : {p}")
+    sys.stdout.flush()
+   
+
+#Exit the program
+sys.exit(0)
