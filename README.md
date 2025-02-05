@@ -6,12 +6,12 @@ GOAL: given a folder of csv files containing scoring data, write script that wil
 ## To Run the Python File in Terminal 
 Ensure you have pandas and numpy installed: `pip install pandas numpy` 
 
-command 1: `chmod +x file.py`
+command 1: `chmod +x Reliability-Project.py`
 
-command 2: `file.py <initial> <initial>` 
+command 2: `Reliability-Project.py <initial> <initial>` 
 
 OR 
 
-command 1: `python file.py <initial> <initial>` 
+command 1: `python Reliability-Project.py <initial> <initial>` 
 
-command 2: `python3 file.py <initial> <initial>`
+command 2: `python3 Reliability-Project.py <initial> <initial>`
